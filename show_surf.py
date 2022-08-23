@@ -3,6 +3,7 @@ import taichi.math as tm
 import numpy as np
 import parse_vtk as vtk
 import parse_surf
+import extract_surf
 ti.init()
 
 # import data from the parsed vtk, save as numpy array
@@ -12,7 +13,8 @@ numParticles,_ = pos_np.shape
 numTets,_ = tet_np.shape
 
 # copy data from extract_surf
-surf_np = parse_surf.surf_np
+# surf_np = parse_surf.surf_np
+surf_np = extract_surf.surf_np
 numSurfs,_ = surf_np.shape
 
 # copy data to the taichi field
@@ -60,7 +62,7 @@ def main():
         
         #draw
         # scene.particles(pos, radius=0.02, color=(0, 1, 1))
-        scene.mesh(pos, indices=surf_show)
+        scene.mesh(pos, indices=surf_show, color =(1,1,0) )
 
         #show the frame
         canvas.scene(scene)
