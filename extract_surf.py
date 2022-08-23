@@ -22,19 +22,34 @@ def extract_unique_triangles(f):
   return f[indxs[count==1]]
 
 def reconstruct(faces):
-  for face in faces:
-    tet = tets[face[0]]
+  numFace,_ = faces.shape
+  newFaces = np.zeros((numFace, 3) , dtype=int)
+  for i,face in enumerate(faces):
+    vert = tets[face[0]]
     hasVert = [False]*4
     for j in range(4):
-      for i in range(1,4):
-        if face[i] == tet[j]:
+      for k in range(1,4):
+        if face[k] == vert[j]:
           hasVert[j] = True
-    face = face[hasVert]
-    # f0 = [face[0],face[2],face[1]]
-    # f1 = [face[0],face[3],face[2]]
-    # f2 = [face[0],face[1],face[3]]
-    # f3 = [face[1],face[2],face[3]]
-  return faces[:,1:4]
+    
+    if hasVert[0] and hasVert[2] and hasVert[1]:
+      newFaces[i] = np.array([vert[0],vert[2],vert[1]])
+
+    elif hasVert[0] and hasVert[3] and hasVert[2]:
+      newFaces[i] = np.array([vert[0],vert[3],vert[2]])
+
+    elif hasVert[0] and hasVert[1] and hasVert[3]:
+      newFaces[i] = np.array([vert[0],vert[1],vert[3]])
+
+    elif hasVert[1] and hasVert[2] and hasVert[3]:
+      newFaces[i] = np.array([vert[1],vert[2],vert[3]])
+      
+    # face = face[hasVert]
+    # f0 = [vert[0],vert[2],vert[1]]
+    # f1 = [vert[0],vert[3],vert[2]]
+    # f2 = [vert[0],vert[1],vert[3]]
+    # f3 = [vert[1],vert[2],vert[3]]
+  return newFaces
 
 def extract_surface(t):
   f=list_faces(t)
