@@ -48,6 +48,7 @@ def init_pos():
 
 def main():
     init_pos()
+    np.savetxt("surf_taichi.csv", surf_np,fmt='%d', delimiter='\t')
     while window.running:
         #set the camera, you can move around by pressing 'wasdeq'
         camera.track_user_inputs(window, movement_speed=0.03, hold_key=ti.ui.RMB)
